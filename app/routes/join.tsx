@@ -86,13 +86,18 @@ export default function Join() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col justify-center">
+    <div className="flex min-h-full flex-col justify-center h-14 bg-gradient-to-r from-white to-yellow-500">
       <div className="mx-auto w-full max-w-md px-8">
+      <img
+                className="mb-8"
+                src="https://static.vecteezy.com/system/resources/previews/001/199/898/original/football-png.png"
+                alt="Football"
+              />
         <Form method="post" className="space-y-6">
           <div>
             <label
               htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-md font-medium text-gray-700"
             >
               Email address
             </label>
@@ -120,7 +125,7 @@ export default function Join() {
           <div>
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
+              className="block text-md font-medium text-gray-700"
             >
               Password
             </label>
@@ -146,12 +151,12 @@ export default function Join() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="w-full rounded bg-blue-500  py-2 px-4 text-white hover:bg-blue-600 focus:bg-blue-400"
+            className="w-full rounded bg-orange-900 py-2 px-4 text-lg text-white  hover:bg-lime-700 focus:bg-lime"
           >
-            Create Account
+            Set... Hit Hit
           </button>
           <div className="flex items-center justify-center">
-            <div className="text-center text-sm text-gray-500">
+            <div className="text-center text-md text-black">
               Already have an account?{" "}
               <Link
                 className="text-blue-500 underline"
