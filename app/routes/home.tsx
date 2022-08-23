@@ -75,7 +75,7 @@ export default function Home() {
       </div>
       <div>
         {questions.map((q) => (
-          <div className={"flex flex-col gap-1"}>
+          <div key={q.id} className={"flex flex-col gap-1"}>
             <div>Question: {q.question}</div>
             <div>Answer: {q.answer}</div>
           </div>
