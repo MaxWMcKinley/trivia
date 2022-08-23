@@ -3,14 +3,15 @@ import { json, redirect } from "@remix-run/node";
 import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
 import * as React from "react";
 
-import { getUserId, createUserSession } from "~/session.server";
+import { createUserSession, getUserId } from "~/session.server";
 
 import { createUser, getUserByEmail } from "~/models/user.server";
 import { safeRedirect, validateEmail } from "~/utils";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
-  if (userId) return redirect("/");
+  if (userId) return redirect("/home");
+
   return json({});
 }
 
@@ -18,7 +19,7 @@ export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
-  const redirectTo = safeRedirect(formData.get("redirectTo"), "/");
+  const redirectTo = safeRedirect(formData.get("redirectTo"), "/home");
 
   if (!validateEmail(email)) {
     return json(
@@ -86,18 +87,18 @@ export default function Join() {
   }, [actionData]);
 
   return (
-    <div className="flex min-h-full flex-col justify-center h-14 bg-gradient-to-r from-white to-yellow-500">
+    <div className="flex h-14 min-h-full flex-col justify-center bg-gradient-to-r from-white to-yellow-500">
       <div className="mx-auto w-full max-w-md px-8">
-      <img
-                className="mb-8"
-                src="https://static.vecteezy.com/system/resources/previews/001/199/898/original/football-png.png"
-                alt="Football"
-              />
+        <img
+          className="mb-8"
+          src="https://static.vecteezy.com/system/resources/previews/001/199/898/original/football-png.png"
+          alt="Football"
+        />
         <Form method="post" className="space-y-6">
           <div>
             <label
               htmlFor="email"
-              className="block text-md font-medium text-gray-700"
+              className="text-md block font-medium text-gray-700"
             >
               Email address
             </label>
@@ -125,7 +126,7 @@ export default function Join() {
           <div>
             <label
               htmlFor="password"
-              className="block text-md font-medium text-gray-700"
+              className="text-md block font-medium text-gray-700"
             >
               Password
             </label>
@@ -151,12 +152,12 @@ export default function Join() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="w-full rounded bg-orange-900 py-2 px-4 text-lg text-white  hover:bg-lime-700 focus:bg-lime"
+            className="focus:bg-lime w-full rounded bg-orange-900 py-2 px-4 text-lg  text-white hover:bg-lime-700"
           >
             Set... Hit Hit
           </button>
           <div className="flex items-center justify-center">
-            <div className="text-center text-md text-black">
+            <div className="text-md text-center text-black">
               Already have an account?{" "}
               <Link
                 className="text-blue-500 underline"

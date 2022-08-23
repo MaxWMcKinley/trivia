@@ -15,6 +15,8 @@ model User {
   updatedAt DateTime @updatedAt
 
   password Password?
+
+  questions Question[]
 }
 
 model Password {
@@ -24,3 +26,12 @@ model Password {
   userId String @unique
 }
 
+model Question {
+  id String @id @default(cuid())
+
+  author   User   @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId String
+
+  question String
+  answer   String
+}
