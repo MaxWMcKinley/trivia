@@ -63,31 +63,37 @@ export default function Home() {
                 autoFocus={true}
                 name="question"
                 type="text"
+                
               />
+              
             </div>
           </div>
           <div>
             <label htmlFor="answer" className="text-amber-300 text-lg">Option 1</label>
             <div className="mt-1">
               <input id="answer" required name="answer" type="text"  placeholder="wrong answer"/>
+              <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
           <div>
             <label htmlFor="answer" className="text-amber-300 text-lg">Option 2</label>
             <div className="mt-1">
               <input id="answer" required name="answer" type="text" placeholder="wrong answer"/>
+              <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
           <div>
             <label htmlFor="answer" className="text-amber-300 text-lg">Option 3</label>
             <div className="mt-1">
               <input id="answer" required name="answer" type="text" placeholder="wrong answer"/>
+              <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
           <div>
             <label htmlFor="answer" className="text-lime-500 text-lg"> Corerct Answer</label>
             <div className="mt-1">
               <input id="answer" required name="answer" type="text" placeholder="you get it" />
+              <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
           <button type="submit" className="rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 ">Submit Question</button>
