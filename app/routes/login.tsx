@@ -9,7 +9,7 @@ import { safeRedirect, validateEmail } from "~/utils";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
-  if (userId) return redirect("/");
+  if (userId) return redirect("/home");
   return json({});
 }
 
@@ -17,7 +17,7 @@ export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
-  const redirectTo = safeRedirect(formData.get("redirectTo"), "/notes");
+  const redirectTo = safeRedirect(formData.get("redirectTo"), "/home");
   const remember = formData.get("remember");
 
   if (!validateEmail(email)) {
@@ -66,7 +66,7 @@ export const meta: MetaFunction = () => {
 
 export default function LoginPage() {
   const [searchParams] = useSearchParams();
-  const redirectTo = searchParams.get("redirectTo") || "/notes";
+  const redirectTo = searchParams.get("redirectTo") || "/home";
   const actionData = useActionData<typeof action>();
   const emailRef = React.useRef<HTMLInputElement>(null);
   const passwordRef = React.useRef<HTMLInputElement>(null);
@@ -79,19 +79,18 @@ export default function LoginPage() {
     }
   }, [actionData]);
   return (
-    <div className="flex min-h-full flex-col justify-center h-14 bg-gradient-to-r from-white to-yellow-500">
-      
+    <div className="flex h-14 min-h-full flex-col justify-center bg-gradient-to-r from-white to-yellow-500">
       <div className="mx-auto w-full max-w-md px-8 ">
-      <img
-                className="mb-8"
-                src="https://static.vecteezy.com/system/resources/previews/001/199/898/original/football-png.png"
-                alt="Football"
-              />
+        <img
+          className="mb-8"
+          src="https://static.vecteezy.com/system/resources/previews/001/199/898/original/football-png.png"
+          alt="Football"
+        />
         <Form method="post" className="space-y-6">
           <div>
             <label
               htmlFor="email"
-              className="block text-md font-medium text-black"
+              className="text-md block font-medium text-black"
             >
               Email address
             </label>
@@ -119,7 +118,7 @@ export default function LoginPage() {
           <div>
             <label
               htmlFor="password"
-              className="block text-md font-medium text-black"
+              className="text-md block font-medium text-black"
             >
               Password
             </label>
@@ -145,7 +144,7 @@ export default function LoginPage() {
           <input type="hidden" name="redirectTo" value={redirectTo} />
           <button
             type="submit"
-            className="w-full rounded bg-orange-900 py-2 px-4 text-lg text-white  hover:bg-lime-700 focus:bg-lime"
+            className="focus:bg-lime w-full rounded bg-orange-900 py-2 px-4 text-lg  text-white hover:bg-lime-700"
           >
             Set..Hit Hit
           </button>
@@ -159,7 +158,7 @@ export default function LoginPage() {
               />
               <label
                 htmlFor="remember"
-                className="ml-2 block text-md text-black"
+                className="text-md ml-2 block text-black"
               >
                 Remember me
               </label>

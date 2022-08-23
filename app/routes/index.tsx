@@ -1,9 +1,20 @@
 import { Link } from "@remix-run/react";
 
 import { useOptionalUser } from "~/utils";
+import type { LoaderArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import { getUserId } from "~/session.server";
+
+export async function loader({ request }: LoaderArgs) {
+  const userId = await getUserId(request);
+  if (userId) return redirect("/home");
+
+  return json({});
+}
 
 export default function Index() {
   const user = useOptionalUser();
+
   return (
     <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
       <div className="relative sm:pb-16 sm:pt-8">
