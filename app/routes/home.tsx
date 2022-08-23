@@ -48,14 +48,16 @@ export default function Home() {
   const questions = useLoaderData<Question[]>();
 
   return (
-    <div className={"flex flex-col gap-1"}>
-      <div className={"text-xl"}>Home</div>
+    <div className={"relative min-h-screen bg-gradient-to-r from-stone-900 to-stone-900 sm:flex sm:items-center sm:justify-center"}>
       <div>
+      <p className="text-2xl flex items-center justify-center text-amber-300 pb-4 max-w-md">Create a multiple choice question about yourself from our younger years.</p>
+      <p className="text-xl flex items-center justify-start text-white pb-8 max-w-md"> Example: What car did I drive in high school?</p>
         <Form method="post" className="space-y-6">
           <div>
-            <label htmlFor="question">Question</label>
+            <label htmlFor="question" className="text-white text-lg text-blue-400">Question</label>
             <div className="mt-1">
               <input
+                placeholder="?????"
                 id="question"
                 required
                 autoFocus={true}
@@ -65,13 +67,49 @@ export default function Home() {
             </div>
           </div>
           <div>
-            <label htmlFor="answer">Answer</label>
+            <label htmlFor="answer" className="text-amber-300 text-lg">Option 1</label>
             <div className="mt-1">
-              <input id="answer" required name="answer" type="text" />
+              <input id="answer" required name="answer" type="text"  placeholder="wrong answer"/>
             </div>
           </div>
-          <button type="submit">Add Question</button>
+          <div>
+            <label htmlFor="answer" className="text-amber-300 text-lg">Option 2</label>
+            <div className="mt-1">
+              <input id="answer" required name="answer" type="text" placeholder="wrong answer"/>
+            </div>
+          </div>
+          <div>
+            <label htmlFor="answer" className="text-amber-300 text-lg">Option 3</label>
+            <div className="mt-1">
+              <input id="answer" required name="answer" type="text" placeholder="wrong answer"/>
+            </div>
+          </div>
+          <div>
+            <label htmlFor="answer" className="text-lime-500 text-lg"> Corerct Answer</label>
+            <div className="mt-1">
+              <input id="answer" required name="answer" type="text" placeholder="you get it" />
+            </div>
+          </div>
+          <button type="submit" className="rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 ">Submit Question</button>
         </Form>
+      </div>
+      <div className="mt-40 ">
+    
+        <img
+        className="w-40 h-30 pb-8"
+        src="https://upload.wikimedia.org/wikipedia/en/2/27/Trivia.png"
+        alt="Trivia"
+      />
+          <img
+          className="w-40 h-30 pb-8"
+          src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Eucalyp-Deus_High_School.png"
+          alt="High School"
+        />
+          <img
+          className="w-40 h-30 pb-8"
+          src="https://upload.wikimedia.org/wikipedia/en/2/27/Trivia.png"
+          alt="Trivia"
+        />
       </div>
       <div>
         {questions.map((q) => (
