@@ -33,5 +33,15 @@ model Question {
   authorId String
 
   question String
-  answer   String
+  options  QuestionOptions[]
+}
+
+model QuestionOptions {
+  id String @id @default(cuid())
+
+  option   String
+  isAnswer Boolean
+
+  Question   Question? @relation(fields: [questionId], references: [id])
+  questionId String?
 }

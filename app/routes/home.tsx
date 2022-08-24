@@ -8,19 +8,32 @@ import type { Question } from "@prisma/client";
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
 
-  return prisma.question.findMany({ where: { authorId: userId } });
+  return prisma.question.findMany({ where: { authorId: userId }, include: {options: true}});
 }
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const question = formData.get("question");
-  const answer = formData.get("answer");
+  const option1 = formData.get("option1");
+  const option2 = formData.get("option2");
+  const option3 = formData.get("option3");
+  const option4 = formData.get("option4");
+
+
 
   if (
     !question ||
-    !answer ||
+    !option1 ||
+    !option2 ||
+    !option3 ||
+    !option4 ||
+
     typeof question !== "string" ||
-    typeof answer !== "string"
+    typeof option1 !== "string" ||
+    typeof option2 !== "string" ||
+    typeof option3 !== "string" ||
+    typeof option4 !== "string" 
+
   ) {
     console.error("you fucked up");
     return;
@@ -35,7 +48,7 @@ export async function action({ request }: ActionArgs) {
 
   try {
     await prisma.question.create({
-      data: { question, answer, author: { connect: { id: userId } } },
+      data: { question, author: { connect: { id: userId } }, options: {create: [{option: option1, isAnswer: false}, {option: option2, isAnswer: false}, {option: option3, isAnswer: false}, {option: option4, isAnswer: false}]} },
     });
   } catch (e) {
     console.error(e);
@@ -46,38 +59,81 @@ export async function action({ request }: ActionArgs) {
 
 export default function Home() {
   const questions = useLoaderData<Question[]>();
-
+  console.log(questions);
   return (
-    <div className={"flex flex-col gap-1"}>
-      <div className={"text-xl"}>Home</div>
+    <div className={"relative min-h-screen bg-gradient-to-r from-stone-900 to-stone-900 sm:flex sm:items-center sm:justify-center"}>
       <div>
+      <p className="text-2xl flex items-center justify-center text-amber-300 pb-4 max-w-md">Create a multiple choice question about yourself from our younger years.</p>
+      <p className="text-xl flex items-center justify-start text-white pb-8 max-w-md"> Example: What car did I drive in high school?</p>
         <Form method="post" className="space-y-6">
           <div>
-            <label htmlFor="question">Question</label>
+            <label htmlFor="question" className="text-white text-lg text-blue-400">Question</label>
             <div className="mt-1">
               <input
+                placeholder="?????"
                 id="question"
                 required
                 autoFocus={true}
                 name="question"
                 type="text"
+                
               />
+              
             </div>
           </div>
           <div>
-            <label htmlFor="answer">Answer</label>
+            <label htmlFor="option1" className="text-amber-300 text-lg">Option 1</label>
             <div className="mt-1">
-              <input id="answer" required name="answer" type="text" />
+              <input id="option1" required name="option1" type="text"  placeholder="wrong answer"/>
+              <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
-          <button type="submit">Add Question</button>
+          <div>
+            <label htmlFor="option2" className="text-amber-300 text-lg">Option 2</label>
+            <div className="mt-1">
+              <input id="option2" required name="option2" type="text" placeholder="wrong answer"/>
+              <input type="checkbox" className="ml-8"></input>
+            </div>
+          </div>
+          <div>
+            <label htmlFor="option3" className="text-amber-300 text-lg">Option 3</label>
+            <div className="mt-1">
+              <input id="option3" required name="option3" type="text" placeholder="wrong answer"/>
+              <input type="checkbox" className="ml-8"></input>
+            </div>
+          </div>
+          <div>
+            <label htmlFor="option4" className="text-lime-500 text-lg"> Option 4</label>
+            <div className="mt-1">
+              <input id="option4" required name="option4" type="text" placeholder="you get it" />
+              <input type="checkbox" className="ml-8"></input>
+            </div>
+          </div>
+          <button type="submit" className="rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 ">Submit Question</button>
         </Form>
+      </div>
+      <div className="mt-40 ">
+    
+        <img
+        className="w-40 h-30 pb-8"
+        src="https://upload.wikimedia.org/wikipedia/en/2/27/Trivia.png"
+        alt="Trivia"
+      />
+          <img
+          className="w-40 h-30 pb-8"
+          src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Eucalyp-Deus_High_School.png"
+          alt="High School"
+        />
+          <img
+          className="w-40 h-30 pb-8"
+          src="https://upload.wikimedia.org/wikipedia/en/2/27/Trivia.png"
+          alt="Trivia"
+        />
       </div>
       <div>
         {questions.map((q) => (
           <div key={q.id} className={"flex flex-col gap-1"}>
             <div>Question: {q.question}</div>
-            <div>Answer: {q.answer}</div>
           </div>
         ))}
       </div>
