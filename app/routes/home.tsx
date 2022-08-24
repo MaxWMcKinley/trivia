@@ -8,19 +8,32 @@ import type { Question } from "@prisma/client";
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
 
-  return prisma.question.findMany({ where: { authorId: userId } });
+  return prisma.question.findMany({ where: { authorId: userId }, include: {options: true}});
 }
 
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const question = formData.get("question");
-  const answer = formData.get("answer");
+  const option1 = formData.get("option1");
+  const option2 = formData.get("option2");
+  const option3 = formData.get("option3");
+  const option4 = formData.get("option4");
+
+
 
   if (
     !question ||
-    !answer ||
+    !option1 ||
+    !option2 ||
+    !option3 ||
+    !option4 ||
+
     typeof question !== "string" ||
-    typeof answer !== "string"
+    typeof option1 !== "string" ||
+    typeof option2 !== "string" ||
+    typeof option3 !== "string" ||
+    typeof option4 !== "string" 
+
   ) {
     console.error("you fucked up");
     return;
@@ -35,7 +48,7 @@ export async function action({ request }: ActionArgs) {
 
   try {
     await prisma.question.create({
-      data: { question, answer, author: { connect: { id: userId } } },
+      data: { question, author: { connect: { id: userId } }, options: {create: [{option: option1, isAnswer: false}, {option: option2, isAnswer: false}, {option: option3, isAnswer: false}, {option: option4, isAnswer: false}]} },
     });
   } catch (e) {
     console.error(e);
@@ -46,7 +59,7 @@ export async function action({ request }: ActionArgs) {
 
 export default function Home() {
   const questions = useLoaderData<Question[]>();
-
+  console.log(questions);
   return (
     <div className={"relative min-h-screen bg-gradient-to-r from-stone-900 to-stone-900 sm:flex sm:items-center sm:justify-center"}>
       <div>
@@ -69,30 +82,30 @@ export default function Home() {
             </div>
           </div>
           <div>
-            <label htmlFor="answer" className="text-amber-300 text-lg">Option 1</label>
+            <label htmlFor="option1" className="text-amber-300 text-lg">Option 1</label>
             <div className="mt-1">
-              <input id="answer" required name="answer" type="text"  placeholder="wrong answer"/>
+              <input id="option1" required name="option1" type="text"  placeholder="wrong answer"/>
               <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
           <div>
-            <label htmlFor="answer" className="text-amber-300 text-lg">Option 2</label>
+            <label htmlFor="option2" className="text-amber-300 text-lg">Option 2</label>
             <div className="mt-1">
-              <input id="answer" required name="answer" type="text" placeholder="wrong answer"/>
+              <input id="option2" required name="option2" type="text" placeholder="wrong answer"/>
               <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
           <div>
-            <label htmlFor="answer" className="text-amber-300 text-lg">Option 3</label>
+            <label htmlFor="option3" className="text-amber-300 text-lg">Option 3</label>
             <div className="mt-1">
-              <input id="answer" required name="answer" type="text" placeholder="wrong answer"/>
+              <input id="option3" required name="option3" type="text" placeholder="wrong answer"/>
               <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
           <div>
-            <label htmlFor="answer" className="text-lime-500 text-lg"> Corerct Answer</label>
+            <label htmlFor="option4" className="text-lime-500 text-lg"> Option 4</label>
             <div className="mt-1">
-              <input id="answer" required name="answer" type="text" placeholder="you get it" />
+              <input id="option4" required name="option4" type="text" placeholder="you get it" />
               <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
@@ -121,7 +134,6 @@ export default function Home() {
         {questions.map((q) => (
           <div key={q.id} className={"flex flex-col gap-1"}>
             <div>Question: {q.question}</div>
-            <div>Answer: {q.answer}</div>
           </div>
         ))}
       </div>
