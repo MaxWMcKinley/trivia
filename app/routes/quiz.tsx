@@ -1,47 +1,48 @@
-import { Form } from "@remix-run/react";
+import willy2 from "../../public/Images/jinans2.jpg";
 
 export default function Quiz() {
+
   return (
-    <main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
+    <main className="relative md:min-h-screen md:bg-white sm:h-screen sm:bg-stone-900 sm:flex sm:items-center sm:justify-center">
     <div className="relative sm:pb-16 sm:pt-8">
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div className="relative shadow-xl p-10 sm:overflow-hidden sm:rounded-2xl">
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-gradient-to-r from-stone-900 to-stone-900" />
           </div>
-          <div className="relative box-content h-80 w-80 sm:px-6 sm:pt-4 sm:pb-4 lg:px-8 lg:pb-2 lg:pt-32">
-          <div className="relative box-content bottom-32">
+          <div className="relative box-content mt-44 md:mt-0 md:h-80 md:w-80 sm:h-screen sm:px-6 sm:pt-4 sm:pb-4 lg:px-8 lg:pb-2 lg:pt-32">
+          <div className="relative box-content bottom-44 md:bottom-36 flex items-center justify-center">
           <img
-                className="h-60 w-30 "
-                src="https://bloximages.newyork1.vip.townnews.com/tylerpaper.com/content/tncms/assets/v3/editorial/f/c2/fc260d20-b131-5c59-9a4e-3b908dd675da/59ef9b1525f3c.image.jpg?crop=440%2C330%2C80%2C0&resize=1200%2C900&order=crop%2Cresize"
+                className="md:h-64 md:w-64 border-solid border-2 border-amber-300 sm:w-40 sm:h-40"
+                src={willy2}
                 alt="Tyler Texas Downtown"
               />
               </div>
-            <div className="relative box-content bottom-24">
-              <p className="text-center text-sm text-white">
-                On this play, did I make this shot?
+            <div className="relative box-content bottom-36 md:bottom-28">
+              <p className="text-center text-md text-white">
+                Aproxitematly, how man inches did I deep throat this thick green hog?
               </p>
-            <div className="mx-auto mt-10 max-w-sm sm:flex sm:max-w-none sm:justify-center">
+            <div className="mx-auto mt-8 max-w-sm sm:flex sm:max-w-none sm:justify-center">
               <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
                 <div
-                  className="flex items-center justify-center rounded-md border border-transparent bg-white px-4 py-3 text-base font-medium text-amber-700 shadow-sm hover:bg-yellow-50 sm:px-8"
+                  className="flex items-center justify-center rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-white hover:text-amber-700"
                 >
-                  No
+                  2 inches
                 </div>
                 <div
-                  className="flex items-center justify-center rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200  "
+                  className="flex items-center justify-center rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-white  "
                 >
-                  No
+                  5 inches
                 </div>
                 <div
-                  className="flex items-center justify-center rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200  "
+                  className="flex items-center justify-center rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-white  "
                 >
-                  Hell No
+                  9 inches
                 </div>
                 <div
-                  className="flex items-center justify-center rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200  "
+                  className="flex items-center justify-center rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-white hover:text-amber-700 "
                 >
-                  Of Course Not
+                  12 inches
                 </div>
               </div>
               </div>
