@@ -33,9 +33,9 @@ export default function Quiz() {
     <div className="relative sm:pb-16 sm:pt-8">
       <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
       <div id="startBtn" onClick={startQuiz}
-                  className="flex items-center justify-center rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-white hover:text-amber-700"
+                  className="flex items-center justify-center rounded-md bg-amber-300 text-center text-5xl md:text-lg w-screen h-screen md:w-60 md:h-32 m-auto px-4 py-3 font-medium text-black hover:bg-white hover:text-amber-700"
                 >
-                  Start Quiz
+                  Tap To Start Quiz
                 </div>
        
         <div id="quizContainer" className="relative hidden shadow-xl p-10 py-16 sm:overflow-hidden sm:rounded-2xl">
