@@ -1,7 +1,7 @@
 import * as React from "react";
 import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { prisma } from "~/db.server";
-import { Form, useLoaderData } from "@remix-run/react";
+import { Form, useLoaderData, Link, useActionData, useSearchParams } from "@remix-run/react";
 import { getUserId } from "~/session.server";
 import type { Question } from "@prisma/client";
 
@@ -63,9 +63,9 @@ export default function Home() {
   return (
     <div className={"relative min-h-screen bg-gradient-to-r from-stone-900 to-stone-900 sm:flex sm:items-center sm:justify-center"}>
       <div>
-      <p className="text-2xl flex items-center justify-center text-amber-300 pb-4 max-w-md">Create a multiple choice question about yourself from our younger years.</p>
-      <p className="text-xl flex items-center justify-start text-white pb-8 max-w-md"> Example: What car did I drive in high school?</p>
-        <Form method="post" className="space-y-6">
+      <p className="text-md pt-4 ml-4 md:text-2xl flex items-center justify-center md:mt-2 text-amber-300 pb-4 max-w-md">Create a multiple choice question about yourself from our younger years.</p>
+      <p className="text-md ml-4 md:text-xl flex items-center justify-start text-white pb-8 max-w-md"> Example: What car did I drive in high school?</p>
+        <Form method="post" className="space-y-6 ml-10">
           <div>
             <label htmlFor="question" className="text-white text-lg text-blue-400">Question</label>
             <div className="mt-1">
@@ -109,23 +109,29 @@ export default function Home() {
               <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
-          <button type="submit" className="rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 ">Submit Question</button>
+          <Link 
+                to={{
+                  pathname: "/quiz",
+                }} type="submit" className="rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 "
+           >Submit Question
+           
+           </Link>
         </Form>
       </div>
       <div className="mt-40 ">
     
         <img
-        className="w-40 h-30 pb-8"
+        className="w-40 h-30 pb-8 hidden md:block"
         src="https://upload.wikimedia.org/wikipedia/en/2/27/Trivia.png"
         alt="Trivia"
       />
           <img
-          className="w-40 h-30 pb-8"
+          className="w-40 h-30 pb-8 hidden md:block"
           src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Eucalyp-Deus_High_School.png"
           alt="High School"
         />
           <img
-          className="w-40 h-30 pb-8"
+          className="w-40 h-30 pb-8 hidden md:block"
           src="https://upload.wikimedia.org/wikipedia/en/2/27/Trivia.png"
           alt="Trivia"
         />
@@ -133,7 +139,7 @@ export default function Home() {
       <div>
         {questions.map((q) => (
           <div key={q.id} className={"flex flex-col gap-1"}>
-            <div>Question: {q.question}</div>
+            {/* <div>Question: {q.question}</div> */}
           </div>
         ))}
       </div>
