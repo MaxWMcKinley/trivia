@@ -131,7 +131,7 @@ export default function Home() {
         className="w-40 h-30 pb-8 hidden md:block"
         src="https://upload.wikimedia.org/wikipedia/en/2/27/Trivia.png"
         alt="Trivia"
-      />
+      />-b
           <img
           className="w-40 h-30 pb-8 hidden md:block"
           src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Eucalyp-Deus_High_School.png"
