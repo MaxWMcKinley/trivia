@@ -3,7 +3,7 @@ import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { prisma } from "~/db.server";
 import { Form, useLoaderData, Link, useActionData, useSearchParams } from "@remix-run/react";
 import { getUserId } from "~/session.server";
-import type { Question } from "@prisma/client";
+import type { Question, QuestionOptions } from "@prisma/client";
 
 export async function loader({ request }: LoaderArgs) {
   const userId = await getUserId(request);
@@ -57,9 +57,11 @@ export async function action({ request }: ActionArgs) {
   return null;
 }
 
+
 export default function Home() {
   const questions = useLoaderData<Question[]>();
-  console.log(questions);
+  const options = useLoaderData<QuestionOptions[]>();
+
   return (
     <div className={"relative min-h-screen bg-gradient-to-r from-stone-900 to-stone-900 sm:flex sm:items-center sm:justify-center"}>
       <div>
@@ -109,6 +111,11 @@ export default function Home() {
               <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
+           <Link 
+                to={{
+                  pathname: "/quiz",
+                }} type="submit" className=" rounded-md bg-red-700 m-auto mx-10 px-4 py-3 font-medium text-white hover:bg-red-200 "
+           >Skip</Link>
           <Link 
                 to={{
                   pathname: "/quiz",
@@ -124,7 +131,7 @@ export default function Home() {
         className="w-40 h-30 pb-8 hidden md:block"
         src="https://upload.wikimedia.org/wikipedia/en/2/27/Trivia.png"
         alt="Trivia"
-      />
+      />-b
           <img
           className="w-40 h-30 pb-8 hidden md:block"
           src="https://upload.wikimedia.org/wikipedia/commons/b/bc/Eucalyp-Deus_High_School.png"
@@ -138,8 +145,15 @@ export default function Home() {
       </div>
       <div>
         {questions.map((q) => (
-          <div key={q.id} className={"flex flex-col gap-1"}>
-            {/* <div>Question: {q.question}</div> */}
+          <div key={q.id} className={"flex flex-col gap-1 text-white"}>
+            <div>{q.question}</div>
+          </div>
+        ))}
+      </div>
+      <div>
+        {options.map((q) => (
+          <div key={q.id} className={"flex flex-col gap-1 text-white"}>
+            <div>{q.option}</div>
           </div>
         ))}
       </div>
