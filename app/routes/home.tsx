@@ -65,7 +65,6 @@ export default function Home() {
   return (
     <div className={"relative min-h-screen bg-gradient-to-r from-stone-900 to-stone-900 sm:flex sm:items-center sm:justify-center"}>
       <div>
-      
       <p className="text-md pt-4 ml-4 md:text-2xl flex items-center justify-center md:mt-2 text-amber-300 pb-4 max-w-md">Create a multiple choice question about yourself from our younger years.</p>
       <p className="text-md ml-4 md:text-xl flex items-center justify-start text-white pb-8 max-w-md"> Example: What car did I drive in high school?</p>
         <Form method="post" className="space-y-6 ml-10">
@@ -112,15 +111,16 @@ export default function Home() {
               <input type="checkbox" className="ml-8"></input>
             </div>
           </div>
-          <button type="submit" className="rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 "
-           >Submit Question
-           
-           </button>
            <Link 
                 to={{
                   pathname: "/quiz",
                 }} type="submit" className=" rounded-md bg-red-700 m-auto mx-10 px-4 py-3 font-medium text-white hover:bg-red-200 "
-           >Skip
+           >Skip</Link>
+          <Link 
+                to={{
+                  pathname: "/quiz",
+                }} type="submit" className="rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 "
+           >Submit Question
            
            </Link>
         </Form>
