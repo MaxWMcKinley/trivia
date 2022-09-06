@@ -62,7 +62,7 @@ export default function Index() {
                 Tyler, Texas 
               </p>
               <p className="mx-auto mt-4 md:mt-14 max-w-lg text-center text-md block md:hidden text-white drop-shadow-2xl sm:max-w-3xl">
-                Home of THE Jerome "Rocky" Miltion
+                Home to THE Jerome "Rocky" Milton
               </p>
             </div>
           </div>
