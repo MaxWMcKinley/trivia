@@ -26,13 +26,19 @@ export async function loader({ request, params }: LoaderArgs) {
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const answer = formData.get("answer");
+  const metaString = formData.get("meta");
 
-  if (!answer || typeof answer !== "string") {
+  if (
+    !answer ||
+    typeof answer !== "string" ||
+    !metaString ||
+    typeof metaString !== "string"
+  ) {
     console.error("you fucked up");
     return null;
   }
 
-  const isAnswer = formData.get(answer);
+  const meta = JSON.parse(metaString);
 
   const userId = await getUserId(request);
 
@@ -53,7 +59,18 @@ export async function action({ request }: ActionArgs) {
     return null;
   }
 
-  return isAnswer;
+  if (meta.isLastQuestion) {
+    try {
+      await prisma.user.update({
+        where: { id: userId },
+        data: { time: meta.time },
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  return meta.isAnswer;
 }
 
 export default function Quiz() {
@@ -65,6 +82,9 @@ export default function Quiz() {
   const result = useActionData();
 
   const q = questions[Number(qId)];
+  const isLastQuestion = questions.length === Number(qId) + 1;
+
+  const meta = { isLastQuestion, time: 100 };
 
   return (
     <main className="relative sm:flex sm:h-screen sm:items-center sm:justify-center sm:bg-stone-900 md:min-h-screen md:bg-white">
@@ -89,7 +109,7 @@ export default function Quiz() {
               <div className="relative bottom-36 box-content md:bottom-32">
                 <p className="text-md text-center text-white">{q.question}</p>
                 <Form method="post">
-                  <fieldset disabled={!!result}>
+                  <fieldset disabled={result}>
                     <div className="mx-auto mt-6 max-w-sm sm:flex sm:max-w-none">
                       <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
                         {q.options.map((o) => (
@@ -109,29 +129,45 @@ export default function Quiz() {
                               name={o.id}
                               defaultValue={o.isAnswer}
                             />
+                            <input
+                              hidden
+                              key={"meta"}
+                              name={"meta"}
+                              defaultValue={JSON.stringify({
+                                ...meta,
+                                isAnswer: o.isAnswer,
+                              })}
+                            />
                           </div>
                         ))}
                       </div>
                     </div>
                   </fieldset>
                 </Form>
-                {result && (
+                {result !== undefined && (
                   <>
                     <div
                       className={
-                        result === "true"
-                          ? "mt-8 text-lime-500"
-                          : "mt-8 text-amber-500"
+                        result ? "mt-8 text-lime-500" : "mt-8 text-amber-500"
                       }
                     >
-                      {result === "true" ? "Correct" : "Incorrect"}
+                      {result ? "Correct" : "Incorrect"}
                     </div>
-                    <Link
-                      to={`/quiz/${Number(qId) + 1}`}
-                      className="mt-2 flex items-center justify-center rounded-md bg-indigo-200 px-4 py-3 font-medium text-black hover:bg-indigo-100 hover:text-indigo-700 "
-                    >
-                      Next Question
-                    </Link>
+                    {isLastQuestion ? (
+                      <Link
+                        to="/summary"
+                        className="mt-2 flex items-center justify-center rounded-md bg-indigo-200 px-4 py-3 font-medium text-black hover:bg-indigo-100 hover:text-indigo-700 "
+                      >
+                        Finish
+                      </Link>
+                    ) : (
+                      <Link
+                        to={`/quiz/${Number(qId) + 1}`}
+                        className="mt-2 flex items-center justify-center rounded-md bg-indigo-200 px-4 py-3 font-medium text-black hover:bg-indigo-100 hover:text-indigo-700 "
+                      >
+                        Next Question
+                      </Link>
+                    )}
                   </>
                 )}
               </div>
