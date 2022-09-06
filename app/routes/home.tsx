@@ -29,24 +29,7 @@ export async function action({ request }: ActionArgs) {
   const option3 = formData.get("option3");
   const option4 = formData.get("option4");
   const answer = formData.get("answer");
-
-  if (
-    !question ||
-    !option1 ||
-    !option2 ||
-    !option3 ||
-    !option4 ||
-    !answer ||
-    typeof question !== "string" ||
-    typeof option1 !== "string" ||
-    typeof option2 !== "string" ||
-    typeof option3 !== "string" ||
-    typeof option4 !== "string" ||
-    typeof answer !== "string"
-  ) {
-    console.error("you fucked up");
-    return null;
-  }
+  const isDelete = formData.get("delete");
 
   const userId = await getUserId(request);
 
@@ -55,24 +38,54 @@ export async function action({ request }: ActionArgs) {
     return null;
   }
 
-  try {
-    await prisma.question.create({
-      data: {
-        question,
-        author: { connect: { id: userId } },
-        options: {
-          create: [
-            { option: option1, isAnswer: answer === "1" },
-            { option: option2, isAnswer: answer === "2" },
-            { option: option3, isAnswer: answer === "3" },
-            { option: option4, isAnswer: answer === "4" },
-          ],
+  if (isDelete) {
+    try {
+      await prisma.question.deleteMany({
+        where: {
+          authorId: userId,
         },
-      },
-    });
-  } catch (e) {
-    console.error(e);
-    return null;
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  } else {
+    if (
+      !question ||
+      !option1 ||
+      !option2 ||
+      !option3 ||
+      !option4 ||
+      !answer ||
+      typeof question !== "string" ||
+      typeof option1 !== "string" ||
+      typeof option2 !== "string" ||
+      typeof option3 !== "string" ||
+      typeof option4 !== "string" ||
+      typeof answer !== "string"
+    ) {
+      console.error("you fucked up");
+      return null;
+    }
+
+    try {
+      await prisma.question.create({
+        data: {
+          question,
+          author: { connect: { id: userId } },
+          options: {
+            create: [
+              { option: option1, isAnswer: answer === "1" },
+              { option: option2, isAnswer: answer === "2" },
+              { option: option3, isAnswer: answer === "3" },
+              { option: option4, isAnswer: answer === "4" },
+            ],
+          },
+        },
+      });
+    } catch (e) {
+      console.error(e);
+      return null;
+    }
   }
 
   return null;
@@ -174,14 +187,22 @@ export default function Home() {
                 </label>
                 <div className="mt-1">
                   <select className="" id="answer" required name="answer">
-                    <option className="block" value={1}>Option 1</option>
-                    <option className="block" value={2}>Option 2</option>
-                    <option className="block" value={3}>Option 3</option>
-                    <option className="block " value={4}>Option 4</option>
+                    <option className="block" value={1}>
+                      Option 1
+                    </option>
+                    <option className="block" value={2}>
+                      Option 2
+                    </option>
+                    <option className="block" value={3}>
+                      Option 3
+                    </option>
+                    <option className="block " value={4}>
+                      Option 4
+                    </option>
                   </select>
                 </div>
               </div>
-              
+
               <button
                 type="submit"
                 className="rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 "
@@ -209,15 +230,19 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <div className="text-amber-300 text-md ml-4 flex  items-center justify-center pt-8">You're all done</div>
+        <>
+          <div className="text-md ml-4 flex items-center  justify-center pt-8 text-amber-300">
+            You're all done
+          </div>
+          <Link
+            to="/quiz"
+            className="mt-8  flex hidden items-center justify-center rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 "
+          >
+            Enter Quiz
+          </Link>
+        </>
       )}
-       <Link
-                to="/quiz"
-                className="flex  items-center justify-center mt-8 hidden rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 "
-              >
-                Enter Quiz
-              </Link>
-      <div className="text-xl md:text-2xl block md:flex items-center justify-center">
+      <div className="block items-center justify-center text-xl md:flex md:text-2xl">
         {questions.map((q, idx) => (
           <div key={q.id} className={"flex flex-col gap-3  p-10 text-white"}>
             <div>{`Question ${idx + 1}: ${q.question}`}</div>
@@ -231,7 +256,17 @@ export default function Home() {
             ))}
           </div>
         ))}
-        
+        <Form method="post">
+          <button
+            type="submit"
+            name="delete"
+            value="delete"
+            className="rounded-md
+                bg-amber-800 px-4 py-3 font-medium text-black hover:bg-amber-500 "
+          >
+            Delete All Questions
+          </button>
+        </Form>
       </div>
     </div>
   );
