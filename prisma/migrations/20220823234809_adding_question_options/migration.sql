@@ -5,12 +5,12 @@
 
 */
 -- CreateTable
-CREATE TABLE "QuestionOptions" (
+CREATE TABLE "QuestionOption" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "option" TEXT NOT NULL,
     "isAnswer" BOOLEAN NOT NULL,
     "questionId" TEXT,
-    CONSTRAINT "QuestionOptions_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    CONSTRAINT "QuestionOption_questionId_fkey" FOREIGN KEY ("questionId") REFERENCES "Question" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- RedefineTables
