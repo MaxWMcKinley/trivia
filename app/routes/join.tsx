@@ -95,6 +95,24 @@ export default function Join() {
           alt="Football"
         />
         <Form method="post" className="space-y-6">
+        <div>
+            <label
+              htmlFor="firstName"
+              className="text-md block font-medium text-gray-700"
+            >
+              First Name
+            </label>
+            <div className="mt-1">
+              <input
+                id="firstName"
+                required
+                autoFocus={true}
+                name="firstName"
+                type="text"
+                className="w-full rounded border border-gray-500 px-2 py-1 text-lg"
+              />
+            </div>
+          </div>
           <div>
             <label
               htmlFor="email"
