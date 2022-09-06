@@ -66,7 +66,7 @@ export default function Quiz() {
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div
             id="quizContainer"
-            className="relative p-10 py-16 shadow-xl sm:overflow-hidden sm:rounded-2xl"
+            className="relative p-10 py-16 md:pb-36 shadow-xl sm:overflow-hidden sm:rounded-2xl"
           >
             <div className="absolute inset-0 ">
               <div className="absolute inset-0 bg-gradient-to-r from-stone-900 to-stone-900" />
@@ -84,7 +84,7 @@ export default function Quiz() {
                 <p className="text-md text-center text-white">{q.question}</p>
                 <Form method="post">
                   <fieldset disabled={!!result}>
-                    <div className="mx-auto mt-6 max-w-sm sm:flex sm:max-w-none sm:justify-center">
+                    <div className="mx-auto mt-6 max-w-sm sm:flex sm:max-w-none">
                       <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
                         {q.options.map((o) => (
                           <div key={o.id}>
@@ -112,8 +112,8 @@ export default function Quiz() {
                 {result && (
                   <>
                     <div
-                      className={
-                        result === "true" ? "text-lime-500" : "text-amber-500"
+                      className= {
+                        result === "true" ? "text-lime-500 mt-8" : "text-amber-500 mt-8"
                       }
                     >
                       {result === "true" ? "Correct" : "Incorrect"}
@@ -122,7 +122,7 @@ export default function Quiz() {
                       onClick={() =>
                         setCurrentQuestionIdx(currentQuestionIdx + 1)
                       }
-                      className="text-white"
+                      className="flex items-center justify-center rounded-md bg-indigo-200 px-4 py-3 mt-2 font-medium text-black hover:bg-indigo-100 hover:text-indigo-700 "
                     >
                       Next Question
                     </button>

@@ -122,7 +122,7 @@ export default function Home() {
                     required
                     name="option1"
                     type="text"
-                    placeholder="wrong answer"
+                    placeholder="Option 1"
                   />
                 </div>
               </div>
@@ -136,7 +136,7 @@ export default function Home() {
                     required
                     name="option2"
                     type="text"
-                    placeholder="wrong answer"
+                    placeholder="Option 2"
                   />
                 </div>
               </div>
@@ -150,7 +150,7 @@ export default function Home() {
                     required
                     name="option3"
                     type="text"
-                    placeholder="wrong answer"
+                    placeholder="Option 3"
                   />
                 </div>
               </div>
@@ -168,19 +168,20 @@ export default function Home() {
                   />
                 </div>
               </div>
-              <div>
+              <div className="">
                 <label htmlFor="option4" className="text-lg text-lime-500">
                   Select the correct answer
                 </label>
                 <div className="mt-1">
-                  <select id="answer" required name="answer">
-                    <option value={1}>Option 1</option>
-                    <option value={2}>Option 2</option>
-                    <option value={3}>Option 3</option>
-                    <option value={4}>Option 4</option>
+                  <select className="" id="answer" required name="answer">
+                    <option className="block" value={1}>Option 1</option>
+                    <option className="block" value={2}>Option 2</option>
+                    <option className="block" value={3}>Option 3</option>
+                    <option className="block " value={4}>Option 4</option>
                   </select>
                 </div>
               </div>
+              
               <button
                 type="submit"
                 className="rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 "
@@ -208,11 +209,11 @@ export default function Home() {
           </div>
         </div>
       ) : (
-        <div className="text-white">You're all done</div>
+        <div className="text-amber-300 text-md ml-4 flex  items-center justify-center pt-8">You're all done</div>
       )}
-      <div>
+      <div className="text-xl md:text-2xl block md:flex items-center justify-center">
         {questions.map((q, idx) => (
-          <div key={q.id} className={"flex flex-col gap-1 text-white"}>
+          <div key={q.id} className={"flex flex-col gap-3  p-10 text-white"}>
             <div>{`Question ${idx + 1}: ${q.question}`}</div>
             {q.options.map((o) => (
               <div
