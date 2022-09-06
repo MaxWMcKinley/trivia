@@ -18,6 +18,8 @@ model User {
 
   questions Question[]
   Answer    Answer[]
+
+  time Int?
 }
 
 model Password {
