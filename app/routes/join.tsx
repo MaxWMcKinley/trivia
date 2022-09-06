@@ -19,6 +19,8 @@ export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
+  const firstName = formData.get("firstName");
+
   const redirectTo = safeRedirect(formData.get("redirectTo"), "/home");
 
   if (!validateEmail(email)) {
@@ -42,6 +44,13 @@ export async function action({ request }: ActionArgs) {
     );
   }
 
+  if (!firstName || typeof firstName !== "string") {
+    return json(
+      { errors: { email: null, password: "First Name is required" } },
+      { status: 400 }
+    );
+  }
+
   const existingUser = await getUserByEmail(email);
   if (existingUser) {
     return json(
@@ -55,7 +64,7 @@ export async function action({ request }: ActionArgs) {
     );
   }
 
-  const user = await createUser(email, password);
+  const user = await createUser(email, password, firstName);
 
   return createUserSession({
     request,
@@ -95,7 +104,7 @@ export default function Join() {
           alt="Football"
         />
         <Form method="post" className="space-y-6">
-        <div>
+          <div>
             <label
               htmlFor="firstName"
               className="text-md block font-medium text-gray-700"
