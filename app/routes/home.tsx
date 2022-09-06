@@ -261,8 +261,8 @@ export default function Home() {
             type="submit"
             name="delete"
             value="delete"
-            className="rounded-md
-                bg-amber-800 px-4 py-3 font-medium text-black hover:bg-amber-500 "
+            className="rounded-md flex items-center justify-center  md:mt-20 ml-20 md:ml-0
+                bg-red-600 px-4 py-3 font-medium text-white hover:bg-red-400 "
           >
             Delete All Questions
           </button>
