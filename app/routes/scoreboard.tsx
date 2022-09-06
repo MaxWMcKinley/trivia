@@ -42,8 +42,8 @@ export default function Scoreboard() {
             </div>
             <div className="relative box-content h-screen sm:px-6 sm:pt-4 sm:pb-40 md:mt-0 md:h-20 md:w-80 lg:px-8 lg:pb-2 lg:pt-32">
               <p className="text-center text-lg text-white">
-                You scored {numCorrect} points and finished with {1000 - time}{" "}
-                seconds remaining
+                You scored {numCorrect} points and finished in {1000 - time}{" "}
+                seconds!
               </p>
               <div className="mx-auto mt-6 max-w-sm sm:flex sm:max-w-none">
                 <div>
