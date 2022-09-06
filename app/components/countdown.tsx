@@ -1,8 +1,10 @@
 import ReactDOM from "react-dom";
 import React, { useState, useEffect, useCallback } from "react";
+import { timeAtom } from "~/store";
+import { useAtom } from "jotai";
 
 export default function Countdown() {
-  const [count, setCount] = useState(1000);
+  const [count, setCount] = useAtom(timeAtom);
   const timer = useCallback(() => setCount(count - 1), [count, setCount]);
 
   useEffect(() => {

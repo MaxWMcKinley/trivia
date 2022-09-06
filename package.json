@@ -37,6 +37,7 @@
     "@remix-run/server-runtime": "^1.6.8",
     "bcryptjs": "^2.4.3",
     "isbot": "^3.5.0",
+    "jotai": "^1.8.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "tiny-invariant": "^1.2.0"
