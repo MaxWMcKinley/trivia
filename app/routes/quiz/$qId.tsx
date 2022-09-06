@@ -1,21 +1,26 @@
 import ReactDOM from "react-dom";
 import React, { useState, useEffect, useCallback } from "react";
-import willy2 from "../../public/Images/jinans2.jpg";
+import willy2 from "../../../public/Images/jinans2.jpg";
 import { ActionArgs, LoaderArgs, redirect } from "@remix-run/server-runtime";
 import { getUserId } from "~/session.server";
 import { prisma } from "~/db.server";
 import { Question } from "@prisma/client";
-import { Form, useActionData, useLoaderData } from "@remix-run/react";
+import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import Countdown from "~/components/countdown";
 
-export async function loader({ request }: LoaderArgs) {
+export async function loader({ request, params }: LoaderArgs) {
   const userId = await getUserId(request);
   if (!userId) return redirect("/");
 
-  return prisma.question.findMany({
+  const questions = await prisma.question.findMany({
     where: { authorId: { not: userId } },
     include: { options: true },
   });
+
+  return {
+    questions,
+    qId: params.qId,
+  };
 }
 
 export async function action({ request }: ActionArgs) {
@@ -52,13 +57,14 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default function Quiz() {
-  const questions = useLoaderData<Question[]>();
+  const { questions, qId } = useLoaderData<{
+    questions: Question[];
+    qId: string;
+  }>();
+
   const result = useActionData();
-  console.log(result, typeof result);
 
-  const [currentQuestionIdx, setCurrentQuestionIdx] = useState(0);
-
-  const q = questions[currentQuestionIdx];
+  const q = questions[Number(qId)];
 
   return (
     <main className="relative sm:flex sm:h-screen sm:items-center sm:justify-center sm:bg-stone-900 md:min-h-screen md:bg-white">
@@ -118,14 +124,12 @@ export default function Quiz() {
                     >
                       {result === "true" ? "Correct" : "Incorrect"}
                     </div>
-                    <button
-                      onClick={() =>
-                        setCurrentQuestionIdx(currentQuestionIdx + 1)
-                      }
+                    <Link
+                      to={`/quiz/${Number(qId) + 1}`}
                       className="text-white"
                     >
                       Next Question
-                    </button>
+                    </Link>
                   </>
                 )}
               </div>
