@@ -7,6 +7,8 @@ import { prisma } from "~/db.server";
 import { Question } from "@prisma/client";
 import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import Countdown from "~/components/countdown";
+import { timeAtom } from "~/store";
+import { useAtom } from "jotai";
 
 export async function loader({ request, params }: LoaderArgs) {
   const userId = await getUserId(request);
@@ -26,14 +28,15 @@ export async function loader({ request, params }: LoaderArgs) {
 export async function action({ request }: ActionArgs) {
   const formData = await request.formData();
   const answer = formData.get("answer");
-  const metaString = formData.get("meta");
 
-  if (
-    !answer ||
-    typeof answer !== "string" ||
-    !metaString ||
-    typeof metaString !== "string"
-  ) {
+  if (!answer || typeof answer !== "string") {
+    console.error("you fucked up");
+    return null;
+  }
+
+  const metaString = formData.get(answer);
+
+  if (!metaString || typeof metaString !== "string") {
     console.error("you fucked up");
     return null;
   }
@@ -74,18 +77,25 @@ export async function action({ request }: ActionArgs) {
 }
 
 export default function Quiz() {
+  const [time] = useAtom(timeAtom);
+
   const { questions, qId } = useLoaderData<{
     questions: Question[];
     qId: string;
   }>();
 
   const result = useActionData();
-  console.log(result, typeof result);
+
+  useEffect(() => {
+    window.onbeforeunload = function () {
+      return "-";
+    };
+  }, []);
 
   const q = questions[Number(qId)];
   const isLastQuestion = questions.length === Number(qId) + 1;
 
-  const meta = { isLastQuestion, time: 100 };
+  const meta = { isLastQuestion };
 
   return (
     <main className="relative sm:flex sm:h-screen sm:items-center sm:justify-center sm:bg-stone-900 md:min-h-screen md:bg-white">
@@ -93,7 +103,7 @@ export default function Quiz() {
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div
             id="quizContainer"
-            className="relative p-10 py-16 md:pb-44 shadow-xl sm:overflow-hidden sm:rounded-2xl"
+            className="relative p-10 py-16 shadow-xl sm:overflow-hidden sm:rounded-2xl md:pb-44"
           >
             <div className="absolute inset-0 ">
               <div className="absolute inset-0 bg-gradient-to-r from-stone-900 to-stone-900" />
@@ -110,7 +120,7 @@ export default function Quiz() {
               <div className="relative bottom-36 box-content md:bottom-32">
                 <p className="text-md text-center text-white">{q.question}</p>
                 <Form method="post">
-                  <fieldset disabled={result}>
+                  <fieldset disabled={result !== undefined}>
                     <div className="mx-auto mt-6 max-w-sm sm:flex sm:max-w-none">
                       <div className="space-y-4 sm:mx-auto sm:inline-grid sm:grid-cols-2 sm:gap-5 sm:space-y-0">
                         {q.options.map((o) => (
@@ -126,17 +136,12 @@ export default function Quiz() {
                             </button>
                             <input
                               hidden
-                              key={o.id + "-hidden"}
+                              key={"meta-" + o.id}
                               name={o.id}
-                              defaultValue={o.isAnswer}
-                            />
-                            <input
-                              hidden
-                              key={"meta"}
-                              name={"meta"}
                               defaultValue={JSON.stringify({
                                 ...meta,
                                 isAnswer: o.isAnswer,
+                                time,
                               })}
                             />
                           </div>
@@ -156,7 +161,7 @@ export default function Quiz() {
                     </div>
                     {isLastQuestion ? (
                       <Link
-                        to="/summary"
+                        to="/scoreboard"
                         className="mt-2 flex items-center justify-center rounded-md bg-indigo-200 px-4 py-3 font-medium text-black hover:bg-indigo-100 hover:text-indigo-700 "
                       >
                         Finish
