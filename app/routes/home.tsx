@@ -211,6 +211,12 @@ export default function Home() {
       ) : (
         <div className="text-amber-300 text-md ml-4 flex  items-center justify-center pt-8">You're all done</div>
       )}
+       <Link
+                to="/quiz"
+                className="flex  items-center justify-center mt-8 hidden rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 "
+              >
+                Enter Quiz
+              </Link>
       <div className="text-xl md:text-2xl block md:flex items-center justify-center">
         {questions.map((q, idx) => (
           <div key={q.id} className={"flex flex-col gap-3  p-10 text-white"}>
@@ -225,6 +231,7 @@ export default function Home() {
             ))}
           </div>
         ))}
+        
       </div>
     </div>
   );
