@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { ActionArgs, LoaderArgs, redirect } from "@remix-run/server-runtime";
 import { getUserId } from "~/session.server";
 import { prisma } from "~/db.server";
-import { Question } from "@prisma/client";
+import { Question, QuestionOption, User } from "@prisma/client";
 import { Form, Link, useActionData, useLoaderData } from "@remix-run/react";
 import Countdown from "~/components/countdown";
 import { timeAtom } from "~/store";
@@ -15,20 +15,12 @@ export async function loader({ request, params }: LoaderArgs) {
 
   const questions = await prisma.question.findMany({
     where: { authorId: { not: userId } },
-    include: { options: true },
+    include: { options: true, author: true },
   });
-
-  const firstName = await prisma.user.findUnique({
-    where: { id: userId },
-    select: { firstName: true },
-  });
-
-  console.log(firstName);
 
   return {
     questions,
     qId: params.qId,
-    firstName: firstName?.firstName,
   };
 }
 
@@ -86,10 +78,12 @@ export async function action({ request }: ActionArgs) {
 export default function Quiz() {
   const [time] = useAtom(timeAtom);
 
-  const { questions, qId, firstName } = useLoaderData<{
-    questions: Question[];
+  const { questions, qId } = useLoaderData<{
+    questions: (Question & {
+      options: QuestionOption[];
+      author: User;
+    })[];
     qId: string;
-    firstName: string;
   }>();
 
   const result = useActionData();
@@ -102,6 +96,8 @@ export default function Quiz() {
 
   const q = questions[Number(qId)];
   const isLastQuestion = questions.length === Number(qId) + 1;
+
+  const firstName = q.author.firstName;
 
   const meta = { isLastQuestion };
 
@@ -125,7 +121,7 @@ export default function Quiz() {
               <div className="relative bottom-44 box-content flex items-center justify-center md:bottom-36">
                 <img
                   className="border-2 border-solid border-amber-300 sm:h-40 sm:w-40 md:h-64 md:w-64"
-                  src={`/images/${firstName.toLowerCase()}${pictureNum}.jpg`}
+                  src={`/images/${firstName?.toLowerCase()}${pictureNum}.jpg`}
                   alt="Tyler Texas Downtown"
                 />
               </div>
