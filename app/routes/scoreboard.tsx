@@ -45,6 +45,7 @@ export default function Scoreboard() {
                 You scored {numCorrect} points and finished in {1000 - time}{" "}
                 seconds!
               </p>
+              <p className="text-center text-2xl text-white">Screen Shot this Now!</p>
               <div className="mx-auto mt-6 max-w-sm sm:flex sm:max-w-none">
                 <div>
                   <div className="mt-20 flex items-center justify-center">
