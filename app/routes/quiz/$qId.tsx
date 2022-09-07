@@ -103,7 +103,7 @@ export default function Quiz() {
 
   console.log(firstName);
 
-  const pictureNum = useMemo(() => Math.floor(Math.random() * 3) + 1, []);
+  const pictureNum = useMemo(() => Math.floor(Math.random() * 3) + 1, [qId]);
 
   return (
     <main className="relative sm:flex sm:h-screen sm:items-center sm:justify-center sm:bg-stone-900 md:min-h-screen md:bg-white">
