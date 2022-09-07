@@ -1,6 +1,5 @@
 import ReactDOM from "react-dom";
-import React, { useState, useEffect, useCallback } from "react";
-import willy2 from "../../../public/Images/jinans2.jpg";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { ActionArgs, LoaderArgs, redirect } from "@remix-run/server-runtime";
 import { getUserId } from "~/session.server";
 import { prisma } from "~/db.server";
@@ -19,9 +18,17 @@ export async function loader({ request, params }: LoaderArgs) {
     include: { options: true },
   });
 
+  const firstName = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { firstName: true },
+  });
+
+  console.log(firstName);
+
   return {
     questions,
     qId: params.qId,
+    firstName: firstName?.firstName,
   };
 }
 
@@ -79,9 +86,10 @@ export async function action({ request }: ActionArgs) {
 export default function Quiz() {
   const [time] = useAtom(timeAtom);
 
-  const { questions, qId } = useLoaderData<{
+  const { questions, qId, firstName } = useLoaderData<{
     questions: Question[];
     qId: string;
+    firstName: string;
   }>();
 
   const result = useActionData();
@@ -96,6 +104,10 @@ export default function Quiz() {
   const isLastQuestion = questions.length === Number(qId) + 1;
 
   const meta = { isLastQuestion };
+
+  console.log(firstName);
+
+  const pictureNum = useMemo(() => Math.floor(Math.random() * 3) + 1, []);
 
   return (
     <main className="relative sm:flex sm:h-screen sm:items-center sm:justify-center sm:bg-stone-900 md:min-h-screen md:bg-white">
@@ -113,7 +125,7 @@ export default function Quiz() {
               <div className="relative bottom-44 box-content flex items-center justify-center md:bottom-36">
                 <img
                   className="border-2 border-solid border-amber-300 sm:h-40 sm:w-40 md:h-64 md:w-64"
-                  src={willy2}
+                  src={`/images/${firstName.toLowerCase()}${pictureNum}.jpg`}
                   alt="Tyler Texas Downtown"
                 />
               </div>
