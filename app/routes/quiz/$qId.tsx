@@ -111,7 +111,7 @@ export default function Quiz() {
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
           <div
             id="quizContainer"
-            className="relative p-10 py-16 shadow-xl sm:overflow-hidden sm:rounded-2xl md:pb-56"
+            className="relative p-10 py-16 shadow-xl sm:overflow-hidden sm:rounded-2xl md:pb-96"
           >
             <div className="absolute inset-0 ">
               <div className="absolute inset-0 bg-gradient-to-r from-stone-900 to-stone-900" />
