@@ -121,7 +121,7 @@ export default function Quiz() {
               <div className="relative bottom-44 box-content flex items-center justify-center md:bottom-36">
                 <img
                   className="border-2 border-solid border-amber-300 sm:h-40 sm:w-40 md:h-64 md:w-64"
-                  src={`/images/${firstName?.toLowerCase()}${pictureNum}.jpg`}
+                  src={`/Images/${firstName?.toLowerCase()}${pictureNum}.jpg`}
                   alt="Tyler Texas Downtown"
                 />
               </div>

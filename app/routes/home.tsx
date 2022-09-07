@@ -236,7 +236,7 @@ export default function Home() {
           </div>
           <Link
             to="/quiz"
-            className="mt-8  flex hidden items-center justify-center rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 "
+            className="mt-8  flex items-center justify-center rounded-md bg-amber-300 px-4 py-3 font-medium text-black hover:bg-amber-200 "
           >
             Enter Quiz
           </Link>
